@@ -1,20 +1,20 @@
-^qq1
-+c1q1
-c2q1
-c3q1
-c4q1
-^qq2
-c1q2
-+c2q2
-c3q2
-c4q2
-^q
-c
-c
-+c
-c
-^q4
-c41
-c42
-+c43
-c44
+^Which part of the Sun becomes visible during a total solar eclipse?
++Corona
+Photosphere
+Atmosphere
+Core
+^If you went to Mercury, would you weigh less or more than on Earth?
+More
++Less
+Your weight wouldn't change
+Fluctuate
+^When are tides on Earth the highest?
+At 1st quarter
+At Last quarter
++At a full and new moon.
+At 1st half
+^What star is the nearest to our Sun?
+Sirius
+Acamar
++Proxima Centauri
+Betelgeuse

@@ -63,10 +63,30 @@ public class Quiz {
         return questionAnswersMap.entrySet();
     }
 
-    public void getOptions(String questionKey){
-        questionAnswersMap.get(questionKey);
+    public List<Option> getOptions(String questionKey){
+        return questionAnswersMap.get(questionKey);
     }
 
+    public Option getCorrectOption(String questionKey,String selectedOptionValue){
+//        for (var entry :questionAnswersMap.entrySet()) {
+//            if (entry.getKey().equals(questionKey)) {
+//                var options = entry.getValue();
+//                for (var item : options){
+//                    if(item.IsAnswer())return item;
+//                    return item;
+//                }
+//
+//
+//            }
+//        }
+
+        for (var entry : questionAnswersMap.getOrDefault(questionKey,null)){
+            if(entry.getOptionAnswer().equals(selectedOptionValue) &&
+                    entry.IsAnswer())
+                return entry;
+        }
+        return null;
+    }
     public Map<String,List<Option>> getMap(){
         return questionAnswersMap;
     }

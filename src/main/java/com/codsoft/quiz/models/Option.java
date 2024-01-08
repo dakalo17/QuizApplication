@@ -1,7 +1,5 @@
 package com.codsoft.quiz.models;
 
-import java.io.Serializable;
-
 public class Option {
     private final String option;
     private final boolean isAnswer;
@@ -10,7 +8,7 @@ public class Option {
         this.option = option;
         this.isAnswer = isAnswer;
     }
-    public String getOption(){
+    public String getOptionAnswer(){
         return option;
     }
     public boolean IsAnswer(){

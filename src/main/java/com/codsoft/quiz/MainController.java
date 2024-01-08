@@ -55,6 +55,7 @@ public class MainController implements Initializable {
         rbtnQ3.setToggleGroup(toggleGroupOptions);
         rbtnQ4.setToggleGroup(toggleGroupOptions);
 
+
         quiz = new Quiz();
 
         //questionAnswers = unmodifiableObservableMap(observableMap(quiz.getMap()));
@@ -100,10 +101,10 @@ public class MainController implements Initializable {
         if(pageIndex <= page.size()) {
             var options = page.get(pageIndex).getValue();
 
-            rbtnQ1.setText(options.get(0).getOption());
-            rbtnQ2.setText(options.get(1).getOption());
-            rbtnQ3.setText(options.get(2).getOption());
-            rbtnQ4.setText(options.get(3).getOption());
+            rbtnQ1.setText(options.get(0).getOptionAnswer());
+            rbtnQ2.setText(options.get(1).getOptionAnswer());
+            rbtnQ3.setText(options.get(2).getOptionAnswer());
+            rbtnQ4.setText(options.get(3).getOptionAnswer());
 
             lblQuestionText.setText(page.get(pageIndex).getKey());
 
@@ -124,13 +125,29 @@ public class MainController implements Initializable {
     @FXML
     protected void onConfirmClick(ActionEvent actionEvent) {
         RadioButton selectedOption = (RadioButton) toggleGroupOptions.getSelectedToggle();
-        if(selectedOption.getText().isEmpty()){
-            //dialog
+        var toggles = toggleGroupOptions.getToggles();
+        boolean hasSelectedToggle = false;
+
+        for (var toggle : toggles){
+            if(toggle.isSelected()) hasSelectedToggle =true;
+        }
+
+        if(!hasSelectedToggle){
+            CustomDialog.show("Quiz Confirm","You must select an option in order to answer.");
             return;
         }
-        String selectedOptionKey = selectedOption.getText();
 
-        quiz.getOptions(selectedOptionKey);
+
+        String selectedOptionValue = selectedOption.getText();
+
+        //if it's not null that means it is the correct option
+        var correctOption = quiz.getCorrectOption(lblQuestionText.getText(),selectedOptionValue);
+        if(correctOption != null){
+            CustomDialog.show("Quiz Confirm","You answered correctly.");
+            return;
+        }else {
+            CustomDialog.show("Quiz Confirm","You answered incorrectly.");
+        }
 
     }
 }

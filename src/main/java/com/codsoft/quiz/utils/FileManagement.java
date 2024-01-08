@@ -7,16 +7,18 @@ import java.net.URL;
 import java.util.*;
 
 public class FileManagement {
-
+    //data reference https://starwalk.space/en/quiz/middle-school-trivia
     private final LinkedList<String> readFile;
     private final Scanner scanner;
     private InputStream inputStream;
     public FileManagement(){
+
+        //retrieve the questions and corresponding answers
         inputStream =
                 getClass().getResourceAsStream("/com/codsoft/quiz/data/data.txt");
-        if(inputStream == null)
-            System.out.println("ERRRRR");
-        scanner = new Scanner(inputStream);
+
+
+        scanner = new Scanner(Objects.requireNonNull(inputStream));
 
         readFile = new LinkedList<>();
 
