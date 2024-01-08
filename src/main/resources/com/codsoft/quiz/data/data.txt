@@ -1,0 +1,15 @@
+^qq1
++c1q1
+c2q1
+c3q1
+c4q1
+^qq2
+c1q2
++c2q2
+c3q2
+c4q2
+^q
+c
+c
++c
+c

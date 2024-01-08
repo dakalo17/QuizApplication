@@ -2,7 +2,7 @@ package com.codsoft.quiz.models;
 
 import java.io.Serializable;
 
-public class Option implements Serializable {
+public class Option {
     private final String option;
     private final boolean isAnswer;
 

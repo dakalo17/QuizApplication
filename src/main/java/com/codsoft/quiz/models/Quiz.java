@@ -1,27 +1,49 @@
 package com.codsoft.quiz.models;
 
+import com.codsoft.quiz.utils.FileManagement;
+
 import java.util.*;
 
 public class Quiz {
     private List<String> question;
+    private int pageIndices;
     private static final Map<String,List<Option>> questionAnswersMap;
-
+    private static final FileManagement fileManagement = new FileManagement();
     static {
         Map<String,List<Option>> listMap = new LinkedHashMap<>();
 
-        for (int j = 0; j < 10; j++) {
 
-            List<Option> options = new ArrayList<>();
-            for (int i = 0; i < 4; i++) {
-                if(i == 1)
-                    options.add(new Option("ans#"+(i+1) +"-#" + (j+1),true));
-                else
-                    options.add(new Option("ans#"+(i+1) +"-#" + (j+1),false));
+        fileManagement.read();
+        var value = fileManagement.getNext();
+        for (int i = 0; i < fileManagement.rowCount(); i++) {
+
+            String ques = "";
+            List<Option> ops = new ArrayList<>();
+
+
+
+            int count =0;
+            while (value != null && count < 5) {
+
+                //if its questions
+                if (value.startsWith("^")) {
+                    ques = value.replace("^","");
+                }
+
+                //if its options
+                else {
+                    if (value.startsWith("+")) {
+                        value = value.replace("+","");
+                        ops.add(new Option(value, true));
+                    }
+                    else
+                        ops.add(new Option(value, false));
+                }
+
+                count++;
+                value = fileManagement.getNext();
             }
-
-
-
-            listMap.put("q"+(j+1),options);
+            listMap.put(ques,ops);
         }
 
         questionAnswersMap = Collections.unmodifiableMap(listMap);
