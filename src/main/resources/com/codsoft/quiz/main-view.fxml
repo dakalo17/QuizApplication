@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codsoft.quiz.MainController">
+    <Label fx:id="lblQuestionNumber" text="Question">
+        <font>
+          <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <HBox prefHeight="0.0" prefWidth="200.0">
+        <Label fx:id="lblQuestionText" prefHeight="59.0" prefWidth="200.0" text="...?">
+         <HBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </HBox.margin></Label>
+    </HBox>
+    <HBox>
+        <RadioButton fx:id="rbtnQ1" mnemonicParsing="false" onAction="#onOptionClick" text="a">
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </HBox.margin></RadioButton>
+    </HBox>
+    <HBox>
+        <RadioButton fx:id="rbtnQ2" mnemonicParsing="false" onAction="#onOptionClick" text="b">
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </HBox.margin></RadioButton>
+    </HBox>
+    <HBox>
+        <RadioButton fx:id="rbtnQ3" mnemonicParsing="false" onAction="#onOptionClick" text="c">
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </HBox.margin></RadioButton>
+    </HBox>
+    <HBox>
+        <RadioButton fx:id="rbtnQ4" mnemonicParsing="false" onAction="#onOptionClick" text="d">
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </HBox.margin></RadioButton>
+    </HBox>
+   <BorderPane>
+      <center>
+           <Button alignment="TOP_CENTER" mnemonicParsing="false" onAction="#onConfirmClick" prefHeight="25.0" prefWidth="134.0" text="Confirm" />
+      </center>
+   </BorderPane>
+    <Pagination fx:id="MainPgn" pageCount="10" prefHeight="200.0" prefWidth="200.0" />
+</VBox>
