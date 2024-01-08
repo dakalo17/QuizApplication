@@ -83,6 +83,7 @@ public class MainController implements Initializable {
     }
     private void paginate(){
 
+        MainPgn.setPageCount(Quiz.getPageIndices());
         page = new ArrayList<>();
 
 
@@ -90,8 +91,6 @@ public class MainController implements Initializable {
 
             //adding (question+answers) as an element
             page.add(new AbstractMap.SimpleEntry<>(entry));
-
-
 
         }
     }
@@ -122,7 +121,8 @@ public class MainController implements Initializable {
         }
     }
 
-    public void onConfirmClick(ActionEvent actionEvent) {
+    @FXML
+    protected void onConfirmClick(ActionEvent actionEvent) {
         RadioButton selectedOption = (RadioButton) toggleGroupOptions.getSelectedToggle();
         if(selectedOption.getText().isEmpty()){
             //dialog

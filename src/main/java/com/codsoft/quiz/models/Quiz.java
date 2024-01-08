@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Quiz {
     private List<String> question;
-    private int pageIndices;
+    private static int pageIndexCount;
     private static final Map<String,List<Option>> questionAnswersMap;
     private static final FileManagement fileManagement = new FileManagement();
     static {
@@ -15,6 +15,7 @@ public class Quiz {
 
         fileManagement.read();
         var value = fileManagement.getNext();
+        pageIndexCount = fileManagement.rowCount();
         for (int i = 0; i < fileManagement.rowCount(); i++) {
 
             String ques = "";
@@ -62,8 +63,8 @@ public class Quiz {
         return questionAnswersMap.entrySet();
     }
 
-    public List<Option> getOptions(String questionKey){
-        return questionAnswersMap.get(questionKey);
+    public void getOptions(String questionKey){
+        questionAnswersMap.get(questionKey);
     }
 
     public Map<String,List<Option>> getMap(){
@@ -75,5 +76,9 @@ public class Quiz {
             return null;
 
         return question.get(index);
+    }
+
+    public static int getPageIndices(){
+        return (pageIndexCount+1)/5;
     }
 }
