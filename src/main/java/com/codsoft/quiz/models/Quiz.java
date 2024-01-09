@@ -1,6 +1,7 @@
 package com.codsoft.quiz.models;
 
 import com.codsoft.quiz.utils.FileManagement;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -67,14 +68,24 @@ public class Quiz {
         return questionAnswersMap.get(questionKey);
     }
 
-    public boolean IsCorrectOption(String questionKey,String selectedOptionValue){
+    public Pair<Boolean,String> IsCorrectOption(String questionKey, String selectedOptionValue){
+
 
         for (var entry : questionAnswersMap.getOrDefault(questionKey,null)){
             if(entry.getOptionAnswer().equals(selectedOptionValue) &&
                     entry.IsAnswer())
-                return true;
+                return new Pair<>(true,entry.getOptionAnswer());
         }
-        return false;
+        return new Pair<>(false,"");
+    }
+
+    public String getAnswer(String questionKey){
+        for (var options:questionAnswersMap.getOrDefault(questionKey,null)){
+           if(options.IsAnswer()){
+               return options.getOptionAnswer();
+           }
+        }
+        return null;
     }
     public Map<String,List<Option>> getMap(){
         return questionAnswersMap;

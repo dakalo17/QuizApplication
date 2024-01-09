@@ -4,23 +4,30 @@ import com.codsoft.quiz.models.Option;
 import com.codsoft.quiz.models.Quiz;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.*;
 
 public class MainController implements Initializable {
 
 
+    @FXML
+    private Label lblTotalScore;
+    @FXML
+    private TableView<ObservableList<String>> tbvMain;
+    @FXML
+    private Button btnNextPage;
     @FXML
     private Button btnConfirm;
     @FXML
@@ -31,8 +38,7 @@ public class MainController implements Initializable {
     private Label lblQuestionNumber;
     @FXML
     private Label lblQuestionText;
-    @FXML
-    private Pagination MainPgn;
+
     @FXML
     private RadioButton rbtnQ1;
     @FXML
@@ -46,18 +52,30 @@ public class MainController implements Initializable {
     private Quiz quiz;
     private List<Option> questions ;
 
+    private ObservableList<ObservableList<String>> rowEntryList;
 
     private ToggleGroup toggleGroupOptions;
     private List<Map.Entry<String,List<Option>>> page;
     private int pageIndex;
-    private int seconds = 2;
+    private int seconds;
+    private int scoreSum;
 
+    private static final int QUIZ_MAX_DURATION = 10;
     private Timeline timeline;
+
+    private final static List<String> DEFAULT_COLUMNS;
+    static {
+        DEFAULT_COLUMNS = List.of("Question#", "Correct Answer", "Score");
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        questions = new ArrayList<>();
 
+
+        Platform.runLater(()->{
+
+        });setColumnFactory();
+        rowEntryList = FXCollections.observableArrayList();
         //int index = MainPgn.currentPageIndexProperty().get();
 
         toggleGroupOptions = new ToggleGroup();
@@ -69,42 +87,17 @@ public class MainController implements Initializable {
 
         quiz = new Quiz();
 
-        //questionAnswers = unmodifiableObservableMap(observableMap(quiz.getMap()));
-        //start();
 
     }
 
     private void start() {
         paginate();
         setQuestions();
-        setPageEvents();
         setTimer();
     }
 
-    private void setPageEvents(){
-
-
-        MainPgn.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldNumber, Number newNumber) {
-                pageIndex = newNumber.intValue();
-
-                System.out.println(""+pageIndex);
-
-
-                setQuestions();
-            }
-        });
-    }
-
-    private void setNewPage(){
-
-    }
     private void paginate(){
-
-        MainPgn.setPageCount(Quiz.getPageIndices());
         page = new ArrayList<>();
-
 
         for (var entry : quiz.getEntrySet()) {
 
@@ -114,9 +107,22 @@ public class MainController implements Initializable {
         }
     }
 
+    private void hideQuestion(){
+        if(pageIndex < page.size()) {
+            rbtnQ1.setText("***");
+            rbtnQ2.setText("***");
+            rbtnQ3.setText("***");
+            rbtnQ4.setText("***");
+
+            lblQuestionText.setText("******");
+            lblQuestionNumber.setText("Question ".concat(String.valueOf((pageIndex+1))));
+
+        }
+
+    }
     private void setQuestions(){
 
-        if(pageIndex <= page.size()) {
+        if(pageIndex < page.size()) {
             var options = page.get(pageIndex).getValue();
 
             rbtnQ1.setText(options.get(0).getOptionAnswer());
@@ -127,6 +133,9 @@ public class MainController implements Initializable {
             lblQuestionText.setText(page.get(pageIndex).getKey());
 
             lblQuestionNumber.setText("Question ".concat(String.valueOf((pageIndex+1))));
+        }else{
+            //the final page should show the score
+            //spMain.
         }
     }
 
@@ -161,7 +170,8 @@ public class MainController implements Initializable {
 
         //if it's true that means it is the correct option
         var correctOption = quiz.IsCorrectOption(lblQuestionText.getText(),selectedOptionValue);
-        if(correctOption){
+
+        if(correctOption.getKey()){
 
             if(seconds >0)
                 CustomDialog.show("Quiz Confirm","You answered correctly.");
@@ -169,6 +179,8 @@ public class MainController implements Initializable {
                 CustomDialog.show("Quiz Confirm","You have ran out of time and answered correctly.");
 
 
+
+            btnConfirm.setDisable(true);
         }else {
 
             if(seconds > 0)
@@ -176,17 +188,37 @@ public class MainController implements Initializable {
             else
                 CustomDialog.show("Quiz Confirm","You have ran out of time and answered incorrectly.");
 
+
+            btnConfirm.setDisable(true);
+
         }
 
+        var answer = quiz.getAnswer(lblQuestionText.getText());
+        setTable1(answer,correctOption.getKey());
+        disableOptions();
+        btnNextPage.setDisable(false);
+
+
+
+    }
+
+    private void setTable1(String selectedOptionValue,boolean isCorrect) {
+
+        var score =0 ;
+        if(isCorrect)
+            score = Math.abs( QUIZ_MAX_DURATION - Math.abs(seconds - QUIZ_MAX_DURATION) );
+        timeline.stop();
+        setTable(selectedOptionValue,score);
     }
 
     @FXML
     protected void onStartClick(ActionEvent actionEvent) {
+        seconds=QUIZ_MAX_DURATION;
         start();
         btnStart.setDisable(true);
         btnConfirm.setDisable(false);
+        btnNextPage.setDisable(true);
 
-        MainPgn.setDisable(false);
         enableOptions();
     }
 
@@ -210,18 +242,79 @@ public class MainController implements Initializable {
 
                     //decrement from 60 to 0 ,every second
                     if(seconds <= 0) {
-                       // CustomDialog.show("Quiz Answer","You have ran out of time, the options have been disabled");
+                       // CustomDialog.show("Quiz Answer","You have run out of time, the options have been disabled");
                         disableOptions();
                         btnConfirm.fire();
+                        btnConfirm.setDisable(true);
                         timeline.stop();
                     }
+                    //decrement the seconds variable each second
                     lblTimer.setText(String.valueOf(seconds--));
 
                 });
         timeline = new Timeline(keyFrame);
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
     }
 
 
+    @FXML
+    protected void onLeftPageClick(ActionEvent event) {
+    //omitted
+    }
+
+    private void nextPage(){
+        pageIndex++;
+        hideQuestion();
+        btnStart.setDisable(false);
+
+    }
+    @FXML
+    protected void onNextPageClick(ActionEvent event) {
+        nextPage();
+        btnNextPage.setDisable(true);
+        if(toggleGroupOptions.getSelectedToggle() != null)
+            toggleGroupOptions.getSelectedToggle().setSelected(false);
+
+    }
+
+    private void setColumnFactory(){
+
+        for (int i = 0; i < DEFAULT_COLUMNS.size(); i++) {
+            String colName = DEFAULT_COLUMNS.get(i);
+
+            TableColumn<ObservableList<String>,String> col = new TableColumn<>(colName);
+
+            final int colIndex = i;
+            col.setCellValueFactory(val -> {
+                var value = val.getValue();
+
+                return new SimpleStringProperty(value.get(colIndex));
+            });
+            tbvMain.getColumns().add(col);
+
+        }
+        tbvMain.setItems(rowEntryList);
+    }
+    private void setTable(String correctAnswer,int score){
+
+        ObservableList<String> ol = FXCollections.observableArrayList();
+
+
+
+        //question
+        ol.add(String.valueOf(pageIndex+1));
+        //correct answer
+        ol.add(correctAnswer);
+        //score
+        ol.add(String.valueOf(score));
+
+        rowEntryList.add(ol);
+
+        tbvMain.setItems(rowEntryList);
+        scoreSum += score;
+        lblTotalScore.setText(String.valueOf(scoreSum));
+
+    }
 }

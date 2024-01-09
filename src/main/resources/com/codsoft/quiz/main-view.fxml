@@ -5,72 +5,102 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codsoft.quiz.MainController">
-   <BorderPane>
-      <left>
-          <Label fx:id="lblQuestionNumber" text="Question" BorderPane.alignment="CENTER">
-              <font>
-                <Font name="System Bold" size="18.0" />
-              </font>
-            <padding>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </padding>
-          </Label>
-      </left>
-      <right>
-         <Label fx:id="lblTimer" text="60" BorderPane.alignment="CENTER">
-            <font>
-               <Font name="Microsoft Uighur" size="36.0" />
-            </font>
-            <BorderPane.margin>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </BorderPane.margin>
-         </Label>
-      </right>
-   </BorderPane>
-    <HBox prefHeight="0.0" prefWidth="200.0">
-        <Label fx:id="lblQuestionText" prefHeight="17.0" wrapText="true">
-         <HBox.margin>
-            <Insets bottom="10.0" top="10.0" />
-         </HBox.margin></Label>
-      <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-      </padding>
-    </HBox>
-    <HBox>
-        <RadioButton fx:id="rbtnQ1" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
-         <HBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </HBox.margin></RadioButton>
-    </HBox>
-    <HBox>
-        <RadioButton fx:id="rbtnQ2" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
-         <HBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </HBox.margin></RadioButton>
-    </HBox>
-    <HBox>
-        <RadioButton fx:id="rbtnQ3" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
-         <HBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </HBox.margin></RadioButton>
-    </HBox>
-    <HBox>
-        <RadioButton fx:id="rbtnQ4" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
-         <HBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </HBox.margin></RadioButton>
-    </HBox>
-   <BorderPane>
-      <center>
-           <Button fx:id="btnConfirm" alignment="TOP_CENTER" disable="true" mnemonicParsing="false" onAction="#onConfirmClick" prefHeight="25.0" prefWidth="134.0" text="Confirm" />
-      </center>
-      <left>
-         <Button fx:id="btnStart" mnemonicParsing="false" onAction="#onStartClick" text="Start" BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </BorderPane.margin></Button>
-      </left>
-   </BorderPane>
-    <Pagination fx:id="MainPgn" disable="true" maxPageIndicatorCount="6" pageCount="1" prefHeight="200.0" prefWidth="200.0" />
-</VBox>
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codsoft.quiz.MainController">
+   <right>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="tbvMain" prefHeight="200.0">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <HBox>
+               <children>
+                  <Label text="Total Score:" />
+                  <Label fx:id="lblTotalScore" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </right>
+   <left>
+       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+           <BorderPane>
+             <left>
+                 <Label fx:id="lblQuestionNumber" text="Question" BorderPane.alignment="CENTER">
+                     <font>
+                         <Font name="System Bold" size="18.0" />
+                     </font>
+                     <padding>
+                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                 </Label>
+             </left>
+             <right>
+                 <Label fx:id="lblTimer" text="0" BorderPane.alignment="CENTER">
+                     <font>
+                         <Font name="Microsoft Uighur" size="36.0" />
+                     </font>
+                     <BorderPane.margin>
+                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                 </Label>
+             </right>
+           </BorderPane>
+           <HBox prefHeight="0.0" prefWidth="200.0">
+               <Label fx:id="lblQuestionText" prefHeight="17.0" wrapText="true">
+                   <HBox.margin>
+                       <Insets bottom="10.0" top="10.0" />
+                   </HBox.margin>
+             </Label>
+             <padding>
+                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+             </padding>
+           </HBox>
+           <HBox>
+               <RadioButton fx:id="rbtnQ1" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
+                   <HBox.margin>
+                       <Insets bottom="10.0" left="10.0" right="10.0" />
+                   </HBox.margin>
+             </RadioButton>
+           </HBox>
+           <HBox>
+               <RadioButton fx:id="rbtnQ2" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
+                   <HBox.margin>
+                       <Insets bottom="10.0" left="10.0" right="10.0" />
+                   </HBox.margin>
+             </RadioButton>
+           </HBox>
+           <HBox>
+               <RadioButton fx:id="rbtnQ3" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
+                   <HBox.margin>
+                       <Insets bottom="10.0" left="10.0" right="10.0" />
+                   </HBox.margin>
+             </RadioButton>
+           </HBox>
+           <HBox>
+               <RadioButton fx:id="rbtnQ4" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
+                   <HBox.margin>
+                       <Insets bottom="10.0" left="10.0" right="10.0" />
+                   </HBox.margin>
+             </RadioButton>
+           </HBox>
+           <BorderPane>
+             <center>
+                 <Button fx:id="btnConfirm" alignment="TOP_CENTER" disable="true" mnemonicParsing="false" onAction="#onConfirmClick" prefHeight="25.0" prefWidth="134.0" text="Confirm" />
+             </center>
+             <left>
+                 <Button fx:id="btnStart" defaultButton="true" mnemonicParsing="false" onAction="#onStartClick" text="Start" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                 </Button>
+             </left>
+           </BorderPane>
+           <Button fx:id="btnNextPage" disable="true" mnemonicParsing="false" onAction="#onNextPageClick" text="Next ▶" />
+       </VBox>
+   </left>
+   <center>
+      <Separator orientation="VERTICAL" prefHeight="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
