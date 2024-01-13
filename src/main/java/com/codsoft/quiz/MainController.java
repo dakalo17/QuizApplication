@@ -37,7 +37,7 @@ public class MainController implements Initializable {
     @FXML
     private Label lblQuestionNumber;
     @FXML
-    private Label lblQuestionText;
+    private TextArea txtQuestionText;
 
     @FXML
     private RadioButton rbtnQ1;
@@ -72,9 +72,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
 
-        Platform.runLater(()->{
-
-        });setColumnFactory();
+        setColumnFactory();
         rowEntryList = FXCollections.observableArrayList();
         //int index = MainPgn.currentPageIndexProperty().get();
 
@@ -87,6 +85,7 @@ public class MainController implements Initializable {
 
         quiz = new Quiz();
 
+        //hideQuestion();
 
     }
 
@@ -114,7 +113,7 @@ public class MainController implements Initializable {
             rbtnQ3.setText("***");
             rbtnQ4.setText("***");
 
-            lblQuestionText.setText("******");
+            txtQuestionText.setText("******");
             lblQuestionNumber.setText("Question ".concat(String.valueOf((pageIndex+1))));
 
         }
@@ -130,12 +129,14 @@ public class MainController implements Initializable {
             rbtnQ3.setText(options.get(2).getOptionAnswer());
             rbtnQ4.setText(options.get(3).getOptionAnswer());
 
-            lblQuestionText.setText(page.get(pageIndex).getKey());
+            txtQuestionText.setText(page.get(pageIndex).getKey());
 
             lblQuestionNumber.setText("Question ".concat(String.valueOf((pageIndex+1))));
         }else{
             //the final page should show the score
             //spMain.
+
+
         }
     }
 
@@ -169,7 +170,7 @@ public class MainController implements Initializable {
          selectedOptionValue= selectedOption.getText();
 
         //if it's true that means it is the correct option
-        var correctOption = quiz.IsCorrectOption(lblQuestionText.getText(),selectedOptionValue);
+        var correctOption = quiz.IsCorrectOption(txtQuestionText.getText(),selectedOptionValue);
 
         if(correctOption.getKey()){
 
@@ -193,7 +194,7 @@ public class MainController implements Initializable {
 
         }
 
-        var answer = quiz.getAnswer(lblQuestionText.getText());
+        var answer = quiz.getAnswer(txtQuestionText.getText());
         setTable1(answer,correctOption.getKey());
         disableOptions();
         btnNextPage.setDisable(false);
@@ -272,11 +273,17 @@ public class MainController implements Initializable {
     }
     @FXML
     protected void onNextPageClick(ActionEvent event) {
+        //if its the last page
+        if(pageIndex == page.size()-1 ){btnNextPage.setDisable(true);return;}
         nextPage();
         btnNextPage.setDisable(true);
         if(toggleGroupOptions.getSelectedToggle() != null)
             toggleGroupOptions.getSelectedToggle().setSelected(false);
 
+        //meaning the last page
+        if(pageIndex >= page.size()){
+            btnNextPage.setDisable(true);
+        }
     }
 
     private void setColumnFactory(){

@@ -37,7 +37,7 @@
                  </Label>
              </left>
              <right>
-                 <Label fx:id="lblTimer" text="0" BorderPane.alignment="CENTER">
+                 <Label fx:id="lblTimer" text="10" BorderPane.alignment="CENTER">
                      <font>
                          <Font name="Microsoft Uighur" size="36.0" />
                      </font>
@@ -47,16 +47,12 @@
                  </Label>
              </right>
            </BorderPane>
-           <HBox prefHeight="0.0" prefWidth="200.0">
-               <Label fx:id="lblQuestionText" prefHeight="17.0" wrapText="true">
-                   <HBox.margin>
-                       <Insets bottom="10.0" top="10.0" />
-                   </HBox.margin>
-             </Label>
-             <padding>
-                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-             </padding>
-           </HBox>
+         <TextArea fx:id="txtQuestionText" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+         <HBox prefHeight="100.0">
+            <VBox.margin>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </VBox.margin>
+         </HBox>
            <HBox>
                <RadioButton fx:id="rbtnQ1" disable="true" mnemonicParsing="false" onAction="#onOptionClick">
                    <HBox.margin>
